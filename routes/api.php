@@ -11,5 +11,6 @@ Route::post('/login',[Logincontroller::class,'login'] );
 Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('/logout', [LogoutController::class, 'logout']);
     Route::apiResource('transactions',TransactionController::class)->only(['index','store']);
+    Route::get('transactions/report',[TransactionController::class,'report']);
     Route::post('Payments',[PaymentController::class,'store']);
 });

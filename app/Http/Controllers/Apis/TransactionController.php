@@ -8,6 +8,7 @@ use App\Http\Resources\Transactions\TransactionCollection;
 use App\Http\Resources\Transactions\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -39,5 +40,17 @@ class TransactionController extends Controller
           $transaction = Transaction::create($data_attributes);
           return response()->ok(__('Transaction Created Successfully'),[ new  TransactionResource($transaction)]);
 
+      }
+
+      public function report(Request $request){
+        $transactions = Transaction::whereBetween('created_at', [$request->from_date, $request->to_date])
+            ->select(
+                    DB::raw('MONTH(created_at) month , YEAR(created_at) year') ,
+                    DB::raw('sum(case when status = "paid" then total END) as `paid`'),
+                    DB::raw('sum(case when status = "outstanding" then total END) as `outstanding`'),
+                    DB::raw('sum(case when status = "overdue" then total END) as `overdue`'),
+            )->groupby('month','year')
+             ->get();
+          return response()->ok(__('Transactions Report Retrivered  Successfully'), $transactions);
       }
 }
