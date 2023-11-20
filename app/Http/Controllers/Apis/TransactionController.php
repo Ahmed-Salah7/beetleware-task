@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('isAdmin', ['only' => ['store']]);
+
+    }
     public function index(){
         $user = auth()->user();
         $transactions =  $user->is_admin ?

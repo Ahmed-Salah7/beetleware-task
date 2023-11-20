@@ -10,6 +10,10 @@ use App\Models\Transaction;
 
 class PaymentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('isAdmin');
+    }
       public function store(CreatePaymentRequest $request){
 
           $data_attributes = $request->safe()->all();
