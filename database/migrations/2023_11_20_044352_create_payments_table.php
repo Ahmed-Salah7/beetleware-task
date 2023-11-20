@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('transaction_id')
+                ->constrained('transactions')->onDelete('cascade');
+
+            $table->float('amount');
+            $table->date('paid_on');
+            $table->text('details')->nullable();
+
             $table->timestamps();
         });
     }

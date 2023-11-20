@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'transaction_id',
+        'amount',
+        'paid_on',
+        'details'
+    ];
+    protected $hidden =['updated_at'];
+    public function transaction(){
+        return $this->belongsTo(Transaction::class);
+    }
 }

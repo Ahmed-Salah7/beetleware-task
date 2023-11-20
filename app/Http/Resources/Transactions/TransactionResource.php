@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Transactions;
 
 use App\Http\Resources\UserResource;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,12 +18,9 @@ class TransactionResource extends JsonResource
     {
         if($this->status == 'outstanding') {
                 if($request->due_on <= now()){
-//                    Transaction::update(
-//                        ['id'=>$this->id],
-//                        ['status'=>'overdue']
-//                    );
-                    $this->status = 'overdue';
-                    $this->save();
+                    $transaction = Transaction::find($this->id);
+                    $transaction->status='overdue';
+                    $transaction->save();
                 }
         }
 
@@ -35,6 +33,7 @@ class TransactionResource extends JsonResource
             'is_vat_inclusive' => $this->is_vat_inclusive,
             'vat_percentage' => $this->vat_percentage,
             'status' => $this->status,
+            'payments' => $this->payments,
         ];
     }
 }

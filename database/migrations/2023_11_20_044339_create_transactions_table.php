@@ -18,6 +18,7 @@ return new class extends Migration
                 ->constrained('users')->onDelete('cascade');
 
             $table->float('amount');
+            $table->float('amount_remaining_unpaid');
             $table->float('total');
             $table->date('due_on');
             $table->boolean('is_vat_inclusive')->default(1);
