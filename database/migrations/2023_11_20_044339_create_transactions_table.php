@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('payer_id')
+                ->constrained('users')->onDelete('cascade');
+
+            $table->float('amount');
+            $table->float('total');
+            $table->date('due_on');
+            $table->boolean('is_vat_inclusive')->default(1);
+            $table->float('vat_percentage')->nullable();
+            $table->enum('status',['paid','outstanding','overdue'])->default('outstanding');
             $table->timestamps();
         });
     }
